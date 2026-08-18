@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="680" viewBox="0 0 900 680" role="img" aria-labelledby="title desc">
+  <title id="title">Nao Okumura development history</title>
+  <desc id="desc">Dashboard of public commits, monthly activity, active repositories, and source language distribution.</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 0; }
+    .title { fill: #f1f4ef; font-size: 28px; font-weight: 750; }
+    .heading { fill: #f1f4ef; font-size: 17px; font-weight: 700; }
+    .label { fill: #a7b0a9; font-size: 11px; font-weight: 600; }
+    .eyebrow { fill: #4fc184; font-size: 10px; font-weight: 750; }
+    .value { fill: #f1f4ef; font-size: 29px; font-weight: 760; }
+    .small { fill: #a7b0a9; font-size: 10px; }
+    .axis { fill: #a7b0a9; font-size: 9px; }
+  </style>
+  <rect width="900" height="680" rx="8" fill="#131613"/>
+  
+    <text x="26" y="34" class="eyebrow">PUBLIC GITHUB ACTIVITY</text>
+    <text x="26" y="67" class="title">Development History</text>
+    <text x="874" y="62" text-anchor="end" class="small">Updated Aug 18, 2026</text><rect x="24" y="88" width="204" height="84" rx="8" fill="#1a1e1b" stroke="#343b35"/>
+        <text x="40" y="111" class="eyebrow">PUBLIC COMMITS</text>
+        <text x="40" y="146" class="value">729</text>
+        <text x="40" y="164" class="small">authored commits</text><rect x="240" y="88" width="204" height="84" rx="8" fill="#1a1e1b" stroke="#343b35"/>
+        <text x="256" y="111" class="eyebrow">REPOSITORIES</text>
+        <text x="256" y="146" class="value">33</text>
+        <text x="256" y="164" class="small">with contributions</text><rect x="456" y="88" width="204" height="84" rx="8" fill="#1a1e1b" stroke="#343b35"/>
+        <text x="472" y="111" class="eyebrow">ACTIVE PROJECTS</text>
+        <text x="472" y="146" class="value">9</text>
+        <text x="472" y="164" class="small">last 90 days</text><rect x="672" y="88" width="204" height="84" rx="8" fill="#1a1e1b" stroke="#343b35"/>
+        <text x="688" y="111" class="eyebrow">HISTORY SINCE</text>
+        <text x="688" y="146" class="value">2024</text>
+        <text x="688" y="164" class="small">first public commit</text><rect x="24" y="190" width="548" height="276" rx="8" fill="#1a1e1b" stroke="#343b35"/>
+    <text x="42" y="214" class="eyebrow">COMMIT TIMELINE</text>
+    <text x="42" y="236" class="heading">Activity over time</text><line x1="62" y1="248" x2="556" y2="248" stroke="#2b312c"/>
+      <text x="55" y="251" text-anchor="end" class="axis">150</text><line x1="62" y1="309" x2="556" y2="309" stroke="#2b312c"/>
+      <text x="55" y="312" text-anchor="end" class="axis">100</text><line x1="62" y1="370" x2="556" y2="370" stroke="#2b312c"/>
+      <text x="55" y="373" text-anchor="end" class="axis">50</text><line x1="62" y1="431" x2="556" y2="431" stroke="#2b312c"/>
+      <text x="55" y="434" text-anchor="end" class="axis">0</text><g><title>2025-03: 0 commits</title><rect x="67.2" y="431.0" width="17.0" height="0.0" rx="2" fill="#4fc184"/></g><text x="75.7" y="453" text-anchor="middle" class="axis">25.03</text><g><title>2025-04: 38 commits</title><rect x="94.7" y="384.6" width="17.0" height="46.4" rx="2" fill="#4fc184"/></g><g><title>2025-05: 21 commits</title><rect x="122.1" y="405.4" width="17.0" height="25.6" rx="2" fill="#4fc184"/></g><g><title>2025-06: 20 commits</title><rect x="149.5" y="406.6" width="17.0" height="24.4" rx="2" fill="#4fc184"/></g><text x="158.1" y="453" text-anchor="middle" class="axis">25.06</text><g><title>2025-07: 2 commits</title><rect x="177.0" y="428.6" width="17.0" height="2.4" rx="2" fill="#4fc184"/></g><g><title>2025-08: 0 commits</title><rect x="204.4" y="431.0" width="17.0" height="0.0" rx="2" fill="#4fc184"/></g><g><title>2025-09: 73 commits</title><rect x="231.9" y="341.9" width="17.0" height="89.1" rx="2" fill="#4fc184"/></g><text x="240.4" y="453" text-anchor="middle" class="axis">25.09</text><g><title>2025-10: 147 commits</title><rect x="259.3" y="251.7" width="17.0" height="179.3" rx="2" fill="#4fc184"/></g><g><title>2025-11: 5 commits</title><rect x="286.8" y="424.9" width="17.0" height="6.1" rx="2" fill="#4fc184"/></g><g><title>2025-12: 9 commits</title><rect x="314.2" y="420.0" width="17.0" height="11.0" rx="2" fill="#4fc184"/></g><text x="322.7" y="453" text-anchor="middle" class="axis">25.12</text><g><title>2026-01: 46 commits</title><rect x="341.7" y="374.9" width="17.0" height="56.1" rx="2" fill="#4fc184"/></g><g><title>2026-02: 77 commits</title><rect x="369.1" y="337.1" width="17.0" height="93.9" rx="2" fill="#4fc184"/></g><g><title>2026-03: 62 commits</title><rect x="396.5" y="355.4" width="17.0" height="75.6" rx="2" fill="#4fc184"/></g><text x="405.1" y="453" text-anchor="middle" class="axis">26.03</text><g><title>2026-04: 47 commits</title><rect x="424.0" y="373.7" width="17.0" height="57.3" rx="2" fill="#4fc184"/></g><g><title>2026-05: 90 commits</title><rect x="451.4" y="321.2" width="17.0" height="109.8" rx="2" fill="#4fc184"/></g><g><title>2026-06: 23 commits</title><rect x="478.9" y="402.9" width="17.0" height="28.1" rx="2" fill="#4fc184"/></g><text x="487.4" y="453" text-anchor="middle" class="axis">26.06</text><g><title>2026-07: 8 commits</title><rect x="506.3" y="421.2" width="17.0" height="9.8" rx="2" fill="#4fc184"/></g><g><title>2026-08: 59 commits</title><rect x="533.8" y="359.0" width="17.0" height="72.0" rx="2" fill="#4fc184"/></g><text x="542.3" y="453" text-anchor="middle" class="axis">26.08</text><rect x="584" y="190" width="292" height="276" rx="8" fill="#1a1e1b" stroke="#343b35"/>
+    <text x="602" y="214" class="eyebrow">SOURCE FOOTPRINT</text>
+    <text x="602" y="237" class="heading">Language distribution</text>
+    <circle cx="670" cy="313" r="54" fill="none" stroke="#222823" stroke-width="20"/><circle cx="670" cy="313" r="54" fill="none" stroke="#2da66b" stroke-width="20" stroke-dasharray="104.88 234.41" stroke-dashoffset="0.00" transform="rotate(-90 670 313)"><title>TypeScript: 30.9%</title></circle>
+      <rect x="742" y="259" width="8" height="8" rx="2" fill="#2da66b"/>
+      <text x="756" y="267" class="label">TypeScript</text>
+      <text x="860" y="267" text-anchor="end" class="label">30.9%</text><circle cx="670" cy="313" r="54" fill="none" stroke="#4285df" stroke-width="20" stroke-dasharray="72.44 266.85" stroke-dashoffset="-104.88" transform="rotate(-90 670 313)"><title>Go: 21.4%</title></circle>
+      <rect x="742" y="279" width="8" height="8" rx="2" fill="#4285df"/>
+      <text x="756" y="287" class="label">Go</text>
+      <text x="860" y="287" text-anchor="end" class="label">21.4%</text><circle cx="670" cy="313" r="54" fill="none" stroke="#d9912d" stroke-width="20" stroke-dasharray="41.13 298.17" stroke-dashoffset="-177.32" transform="rotate(-90 670 313)"><title>CSS: 12.1%</title></circle>
+      <rect x="742" y="299" width="8" height="8" rx="2" fill="#d9912d"/>
+      <text x="756" y="307" class="label">CSS</text>
+      <text x="860" y="307" text-anchor="end" class="label">12.1%</text><circle cx="670" cy="313" r="54" fill="none" stroke="#df6354" stroke-width="20" stroke-dasharray="32.89 306.40" stroke-dashoffset="-218.45" transform="rotate(-90 670 313)"><title>TeX: 9.7%</title></circle>
+      <rect x="742" y="319" width="8" height="8" rx="2" fill="#df6354"/>
+      <text x="756" y="327" class="label">TeX</text>
+      <text x="860" y="327" text-anchor="end" class="label">9.7%</text><circle cx="670" cy="313" r="54" fill="none" stroke="#856bd1" stroke-width="20" stroke-dasharray="21.24 318.05" stroke-dashoffset="-251.34" transform="rotate(-90 670 313)"><title>HTML: 6.3%</title></circle>
+      <rect x="742" y="339" width="8" height="8" rx="2" fill="#856bd1"/>
+      <text x="756" y="347" class="label">HTML</text>
+      <text x="860" y="347" text-anchor="end" class="label">6.3%</text><circle cx="670" cy="313" r="54" fill="none" stroke="#35a0aa" stroke-width="20" stroke-dasharray="17.43 321.86" stroke-dashoffset="-272.58" transform="rotate(-90 670 313)"><title>Ruby: 5.1%</title></circle>
+      <rect x="742" y="359" width="8" height="8" rx="2" fill="#35a0aa"/>
+      <text x="756" y="367" class="label">Ruby</text>
+      <text x="860" y="367" text-anchor="end" class="label">5.1%</text><circle cx="670" cy="313" r="54" fill="none" stroke="#a28255" stroke-width="20" stroke-dasharray="14.18 325.11" stroke-dashoffset="-290.01" transform="rotate(-90 670 313)"><title>PHP: 4.2%</title></circle>
+      <rect x="742" y="379" width="8" height="8" rx="2" fill="#a28255"/>
+      <text x="756" y="387" class="label">PHP</text>
+      <text x="860" y="387" text-anchor="end" class="label">4.2%</text><circle cx="670" cy="313" r="54" fill="none" stroke="#8e9891" stroke-width="20" stroke-dasharray="35.10 304.19" stroke-dashoffset="-304.19" transform="rotate(-90 670 313)"><title>Other: 10.3%</title></circle>
+      <rect x="742" y="399" width="8" height="8" rx="2" fill="#8e9891"/>
+      <text x="756" y="407" class="label">Other</text>
+      <text x="860" y="407" text-anchor="end" class="label">10.3%</text><text x="670" y="316" text-anchor="middle" class="value">8</text>
+    <text x="670" y="332" text-anchor="middle" class="small">languages</text><rect x="24" y="478" width="852" height="178" rx="8" fill="#1a1e1b" stroke="#343b35"/>
+    <text x="42" y="502" class="eyebrow">RECENT PACE</text>
+    <text x="42" y="525" class="heading">Commit momentum</text><text x="42" y="554" class="label">Last 30 days</text>
+      <text x="858" y="554" text-anchor="end" class="label">63</text>
+      <rect x="42" y="563" width="816" height="7" rx="3.5" fill="#222823"/>
+      <rect x="42" y="563" width="816.0" height="7" rx="3.5" fill="#6da8f3"/><text x="42" y="596" class="label">Last 90 days</text>
+      <text x="858" y="596" text-anchor="end" class="label">97</text>
+      <rect x="42" y="605" width="816" height="7" rx="3.5" fill="#222823"/>
+      <rect x="42" y="605" width="418.8" height="7" rx="3.5" fill="#e8a849"/><text x="42" y="638" class="label">Last 365 days</text>
+      <text x="858" y="638" text-anchor="end" class="label">646</text>
+      <rect x="42" y="647" width="816" height="7" rx="3.5" fill="#222823"/>
+      <rect x="42" y="647" width="687.7" height="7" rx="3.5" fill="#ed7668"/>
+</svg>
