@@ -4,6 +4,7 @@ const username = process.env.GITHUB_USERNAME || "nao317";
 const token = process.env.GITHUB_TOKEN;
 const apiBase = "https://api.github.com";
 const assetsDirectory = new URL("../assets/", import.meta.url);
+const maxRateLimitRetries = 3;
 
 const headers = {
   Accept: "application/vnd.github+json",
@@ -52,13 +53,54 @@ const languageColors = [
   "#8e9891",
 ];
 
-async function github(path) {
-  const response = await fetch(`${apiBase}${path}`, { headers });
-  if (!response.ok) {
-    const body = await response.text();
-    throw new Error(`GitHub API ${response.status} for ${path}: ${body}`);
+function rateLimitDelay(response, retry) {
+  const retryAfterHeader = response.headers.get("retry-after");
+  if (retryAfterHeader !== null) {
+    const retryAfter = Number(retryAfterHeader);
+    if (Number.isFinite(retryAfter) && retryAfter >= 0) {
+      return retryAfter * 1000;
+    }
   }
-  return response.json();
+
+  if (response.headers.get("x-ratelimit-remaining") === "0") {
+    const resetHeader = response.headers.get("x-ratelimit-reset");
+    if (resetHeader !== null) {
+      const reset = Number(resetHeader);
+      if (Number.isFinite(reset)) {
+        return Math.max(reset * 1000 - Date.now(), 0) + 1000;
+      }
+    }
+  }
+
+  return 60_000 * 2 ** retry;
+}
+
+function sleep(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+async function github(path) {
+  for (let retry = 0; ; retry += 1) {
+    const response = await fetch(`${apiBase}${path}`, { headers });
+    if (response.ok) return response.json();
+
+    const body = await response.text();
+    const rateLimited =
+      response.status === 429 ||
+      (response.status === 403 &&
+        (response.headers.get("x-ratelimit-remaining") === "0" ||
+          /rate limit/i.test(body)));
+
+    if (!rateLimited || retry >= maxRateLimitRetries) {
+      throw new Error(`GitHub API ${response.status} for ${path}: ${body}`);
+    }
+
+    const delay = rateLimitDelay(response, retry);
+    console.warn(
+      `GitHub API rate limit for ${path}; retrying in ${Math.ceil(delay / 1000)} seconds (${retry + 1}/${maxRateLimitRetries}).`,
+    );
+    await sleep(delay);
+  }
 }
 
 async function searchCommits() {
@@ -79,24 +121,6 @@ async function searchCommits() {
     throw new Error("Commit history exceeds GitHub Search's 1,000-result limit.");
   }
   return items;
-}
-
-async function mapWithConcurrency(items, concurrency, task) {
-  const results = new Array(items.length);
-  let nextIndex = 0;
-
-  async function worker() {
-    while (nextIndex < items.length) {
-      const index = nextIndex;
-      nextIndex += 1;
-      results[index] = await task(items[index]);
-    }
-  }
-
-  await Promise.all(
-    Array.from({ length: Math.min(concurrency, items.length) }, worker),
-  );
-  return results;
 }
 
 function monthKey(date) {
@@ -148,9 +172,10 @@ async function collectData() {
   const repositories = [
     ...new Map(commits.map((item) => [item.repository.full_name, item.repository])).values(),
   ];
-  const languageResults = await mapWithConcurrency(repositories, 4, (repo) =>
-    github(`/repos/${repo.full_name}/languages`),
-  );
+  const languageResults = [];
+  for (const repo of repositories) {
+    languageResults.push(await github(`/repos/${repo.full_name}/languages`));
+  }
   const languageBytes = {};
   for (const languages of languageResults) {
     for (const [language, bytes] of Object.entries(languages)) {
