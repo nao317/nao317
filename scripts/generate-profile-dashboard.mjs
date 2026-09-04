@@ -15,43 +15,26 @@ const headers = {
 
 const themes = {
   light: {
-    background: "#f6f7f4",
-    surface: "#ffffff",
-    subtle: "#eef1ec",
-    border: "#d8ddd7",
-    grid: "#e7eae6",
-    text: "#171b18",
-    muted: "#66706a",
-    accent: "#167d4d",
-    blue: "#2774d7",
-    amber: "#c47a13",
-    coral: "#d15142",
+    background: "#fafaf8",
+    subtle: "#e8eae6",
+    border: "#d5d8d2",
+    grid: "#e2e4e0",
+    text: "#1b1d1b",
+    muted: "#6b706b",
+    accent: "#3f735c",
+    series: ["#3f735c", "#66796e", "#7c8981", "#929b95", "#a5aba7", "#b6bbb7", "#c6cac7", "#d5d7d5"],
   },
   dark: {
-    background: "#131613",
-    surface: "#1a1e1b",
-    subtle: "#222823",
-    border: "#343b35",
-    grid: "#2b312c",
-    text: "#f1f4ef",
-    muted: "#a7b0a9",
-    accent: "#4fc184",
-    blue: "#6da8f3",
-    amber: "#e8a849",
-    coral: "#ed7668",
+    background: "#171917",
+    subtle: "#2b2f2c",
+    border: "#393d39",
+    grid: "#303430",
+    text: "#f0f1ee",
+    muted: "#9da29d",
+    accent: "#82ad97",
+    series: ["#82ad97", "#81958a", "#7d8982", "#747d77", "#69706c", "#5d625f", "#505451", "#424542"],
   },
 };
-
-const languageColors = [
-  "#2da66b",
-  "#4285df",
-  "#d9912d",
-  "#df6354",
-  "#856bd1",
-  "#35a0aa",
-  "#a28255",
-  "#8e9891",
-];
 
 function rateLimitDelay(response, retry) {
   const retryAfterHeader = response.headers.get("retry-after");
@@ -237,25 +220,21 @@ function svgShell({ width, height, colors, content }) {
   <desc id="desc">Dashboard of public commits, monthly activity, active repositories, and source language distribution.</desc>
   <style>
     text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: 0; }
-    .title { fill: ${colors.text}; font-size: 28px; font-weight: 750; }
-    .heading { fill: ${colors.text}; font-size: 17px; font-weight: 700; }
-    .label { fill: ${colors.muted}; font-size: 11px; font-weight: 600; }
-    .eyebrow { fill: ${colors.accent}; font-size: 10px; font-weight: 750; }
-    .value { fill: ${colors.text}; font-size: 29px; font-weight: 760; }
+    .title { fill: ${colors.text}; font-size: 24px; font-weight: 650; }
+    .heading { fill: ${colors.text}; font-size: 14px; font-weight: 650; }
+    .label { fill: ${colors.muted}; font-size: 11px; font-weight: 500; }
+    .value { fill: ${colors.text}; font-size: 29px; font-weight: 650; }
     .small { fill: ${colors.muted}; font-size: 10px; }
     .axis { fill: ${colors.muted}; font-size: 9px; }
   </style>
-  <rect width="${width}" height="${height}" rx="8" fill="${colors.background}"/>
+  <rect width="${width}" height="${height}" rx="4" fill="${colors.background}"/>
+  <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="3.5" fill="none" stroke="${colors.border}"/>
   ${content}
 </svg>`;
 }
 
-function panel(colors, x, y, width, height) {
-  return `<rect x="${x}" y="${y}" width="${width}" height="${height}" rx="8" fill="${colors.surface}" stroke="${colors.border}"/>`;
-}
-
 function renderHeader(data, colors, width, mobile = false) {
-  const x = mobile ? 18 : 26;
+  const x = mobile ? 18 : 28;
   const date = data.generatedAt.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
@@ -263,35 +242,44 @@ function renderHeader(data, colors, width, mobile = false) {
     timeZone: "UTC",
   });
   return `
-    <text x="${x}" y="${mobile ? 31 : 34}" class="eyebrow">PUBLIC GITHUB ACTIVITY</text>
-    <text x="${x}" y="${mobile ? 62 : 67}" class="title">Development History</text>
-    <text x="${width - x}" y="${mobile ? 84 : 62}" text-anchor="end" class="small">Updated ${xml(date)}</text>`;
+    <text x="${x}" y="${mobile ? 38 : 39}" class="title">Development history</text>
+    <text x="${x}" y="${mobile ? 64 : 59}" class="small">github.com/${xml(username)}</text>
+    <text x="${width - x}" y="${mobile ? 64 : 39}" text-anchor="end" class="small">Updated ${xml(date)}</text>
+    <line x1="${x}" y1="${mobile ? 82 : 72}" x2="${width - x}" y2="${mobile ? 82 : 72}" stroke="${colors.border}"/>`;
 }
 
 function renderMetrics(data, colors, layout) {
   const metrics = [
-    ["PUBLIC COMMITS", number(data.commits), "authored commits"],
-    ["REPOSITORIES", number(data.repositories), "with contributions"],
-    ["ACTIVE PROJECTS", number(data.activeRepositories), "last 90 days"],
-    ["HISTORY SINCE", data.firstYear, "first public commit"],
+    ["Public commits", number(data.commits), "authored commits"],
+    ["Repositories", number(data.repositories), "with contributions"],
+    ["Active projects", number(data.activeRepositories), "in the last 90 days"],
+    ["History since", data.firstYear, "first public commit"],
   ];
+  const cellWidth = layout.width / layout.columns;
   return metrics
     .map(([label, value, note], index) => {
       const column = index % layout.columns;
       const row = Math.floor(index / layout.columns);
-      const x = layout.x + column * (layout.width + layout.gap);
-      const y = layout.y + row * (layout.height + layout.gap);
-      return `${panel(colors, x, y, layout.width, layout.height)}
-        <text x="${x + 16}" y="${y + 23}" class="eyebrow">${label}</text>
-        <text x="${x + 16}" y="${y + 58}" class="value">${value}</text>
-        <text x="${x + 16}" y="${y + 76}" class="small">${note}</text>`;
+      const x = layout.x + column * cellWidth;
+      const y = layout.y + row * layout.rowHeight;
+      const inset = column === 0 ? 0 : 16;
+      const divider = column
+        ? `<line x1="${x}" y1="${y}" x2="${x}" y2="${y + 62}" stroke="${colors.border}"/>`
+        : "";
+      const rowDivider = column === 0 && row > 0
+        ? `<line x1="${layout.x}" y1="${y - 11}" x2="${layout.x + layout.width}" y2="${y - 11}" stroke="${colors.border}"/>`
+        : "";
+      return `${divider}${rowDivider}
+        <text x="${x + inset}" y="${y + 11}" class="label">${label}</text>
+        <text x="${x + inset}" y="${y + 43}" class="value">${value}</text>
+        <text x="${x + inset}" y="${y + 61}" class="small">${note}</text>`;
     })
     .join("");
 }
 
 function renderTimeline(data, colors, box, monthCount) {
   const months = data.monthly.slice(-monthCount);
-  const padding = { left: 38, right: 16, top: 58, bottom: 35 };
+  const padding = { left: 34, right: 8, top: 38, bottom: 27 };
   const chartX = box.x + padding.left;
   const chartY = box.y + padding.top;
   const chartWidth = box.width - padding.left - padding.right;
@@ -300,9 +288,7 @@ function renderTimeline(data, colors, box, monthCount) {
   const gridMax = Math.max(5, Math.ceil(maxCount / 5) * 5);
   const step = chartWidth / Math.max(months.length, 1);
   const barWidth = Math.max(4, Math.min(24, step * 0.62));
-  let content = `${panel(colors, box.x, box.y, box.width, box.height)}
-    <text x="${box.x + 18}" y="${box.y + 24}" class="eyebrow">COMMIT TIMELINE</text>
-    <text x="${box.x + 18}" y="${box.y + 46}" class="heading">Activity over time</text>`;
+  let content = `<text x="${box.x}" y="${box.y + 14}" class="heading">Monthly commits</text>`;
 
   for (let index = 0; index <= 3; index += 1) {
     const y = chartY + (chartHeight / 3) * index;
@@ -315,9 +301,10 @@ function renderTimeline(data, colors, box, monthCount) {
     const height = (item.count / gridMax) * chartHeight;
     const x = chartX + index * step + (step - barWidth) / 2;
     const y = chartY + chartHeight - height;
-    content += `<g><title>${xml(item.month)}: ${item.count} commits</title><rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barWidth.toFixed(1)}" height="${Math.max(height, item.count ? 2 : 0).toFixed(1)}" rx="2" fill="${colors.accent}"/></g>`;
+    content += `<g><title>${xml(item.month)}: ${item.count} commits</title><rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${barWidth.toFixed(1)}" height="${Math.max(height, item.count ? 2 : 0).toFixed(1)}" rx="1" fill="${colors.accent}"/></g>`;
     const labelEvery = months.length > 14 ? 3 : 2;
-    if (index % labelEvery === 0 || index === months.length - 1) {
+    const nextLabelIsLast = index === months.length - 2;
+    if ((index % labelEvery === 0 && !nextLabelIsLast) || index === months.length - 1) {
       content += `<text x="${(chartX + index * step + step / 2).toFixed(1)}" y="${box.y + box.height - 13}" text-anchor="middle" class="axis">${xml(item.month.slice(2).replace("-", "."))}</text>`;
     }
   });
@@ -325,61 +312,57 @@ function renderTimeline(data, colors, box, monthCount) {
 }
 
 function renderLanguages(data, colors, box, mobile = false) {
-  const centerX = box.x + (mobile ? 104 : 86);
-  const centerY = box.y + (mobile ? 112 : 123);
-  const radius = mobile ? 48 : 54;
-  const stroke = mobile ? 18 : 20;
-  const circumference = 2 * Math.PI * radius;
-  const legendX = box.x + (mobile ? 178 : 158);
-  let offset = 0;
-  let content = `${panel(colors, box.x, box.y, box.width, box.height)}
-    <text x="${box.x + 18}" y="${box.y + 24}" class="eyebrow">SOURCE FOOTPRINT</text>
-    <text x="${box.x + 18}" y="${box.y + 47}" class="heading">Language distribution</text>
-    <circle cx="${centerX}" cy="${centerY}" r="${radius}" fill="none" stroke="${colors.subtle}" stroke-width="${stroke}"/>`;
+  const rowGap = mobile ? 24 : 25;
+  const barWidth = box.width;
+  let content = `<text x="${box.x}" y="${box.y + 14}" class="heading">Languages by source size</text>`;
 
   data.languages.forEach((language, index) => {
-    const length = (language.percentage / 100) * circumference;
-    const color = languageColors[index % languageColors.length];
-    const legendY = box.y + 77 + index * (mobile ? 18 : 20);
-    content += `<circle cx="${centerX}" cy="${centerY}" r="${radius}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-dasharray="${length.toFixed(2)} ${(circumference - length).toFixed(2)}" stroke-dashoffset="${(-offset).toFixed(2)}" transform="rotate(-90 ${centerX} ${centerY})"><title>${xml(language.name)}: ${language.percentage.toFixed(1)}%</title></circle>
-      <rect x="${legendX}" y="${legendY - 8}" width="8" height="8" rx="2" fill="${color}"/>
-      <text x="${legendX + 14}" y="${legendY}" class="label">${xml(language.name)}</text>
-      <text x="${box.x + box.width - 16}" y="${legendY}" text-anchor="end" class="label">${language.percentage.toFixed(1)}%</text>`;
-    offset += length;
+    const y = box.y + 39 + index * rowGap;
+    const fillWidth = (language.percentage / 100) * barWidth;
+    const color = colors.series[index % colors.series.length];
+    content += `<text x="${box.x}" y="${y}" class="label">${xml(language.name)}</text>
+      <text x="${box.x + box.width}" y="${y}" text-anchor="end" class="label">${language.percentage.toFixed(1)}%</text>
+      <rect x="${box.x}" y="${y + 7}" width="${barWidth}" height="3" fill="${colors.subtle}"/>
+      <rect x="${box.x}" y="${y + 7}" width="${fillWidth.toFixed(1)}" height="3" fill="${color}"/>`;
   });
-  content += `<text x="${centerX}" y="${centerY + 3}" text-anchor="middle" class="value">${data.languages.length}</text>
-    <text x="${centerX}" y="${centerY + 19}" text-anchor="middle" class="small">languages</text>`;
   return content;
 }
 
 function renderMomentum(data, colors, box, mobile = false) {
   const rates = data.recent.map((item) => item.commits / item.days);
   const maxRate = Math.max(...rates, 1);
-  let content = `${panel(colors, box.x, box.y, box.width, box.height)}
-    <text x="${box.x + 18}" y="${box.y + 24}" class="eyebrow">RECENT PACE</text>
-    <text x="${box.x + 18}" y="${box.y + 47}" class="heading">Commit momentum</text>`;
+  let content = `<text x="${box.x}" y="${box.y + 14}" class="heading">Recent commit pace</text>`;
   data.recent.forEach((item, index) => {
-    const rowY = box.y + 76 + index * (mobile ? 40 : 42);
-    const barWidth = box.width - 36;
+    const columnWidth = box.width / 3;
+    const x = mobile ? box.x : box.x + index * columnWidth;
+    const rowY = mobile ? box.y + 43 + index * 51 : box.y + 43;
+    const barWidth = mobile ? box.width : columnWidth - 28;
     const fillWidth = (rates[index] / maxRate) * barWidth;
-    const color = [colors.blue, colors.amber, colors.coral][index];
-    content += `<text x="${box.x + 18}" y="${rowY}" class="label">Last ${item.label}</text>
-      <text x="${box.x + box.width - 18}" y="${rowY}" text-anchor="end" class="label">${number(item.commits)}</text>
-      <rect x="${box.x + 18}" y="${rowY + 9}" width="${barWidth}" height="7" rx="3.5" fill="${colors.subtle}"/>
-      <rect x="${box.x + 18}" y="${rowY + 9}" width="${fillWidth.toFixed(1)}" height="7" rx="3.5" fill="${color}"/>`;
+    const valueX = mobile ? box.x + box.width : x;
+    const valueAnchor = mobile ? "end" : "start";
+    const divider = !mobile && index
+      ? `<line x1="${x - 14}" y1="${box.y + 32}" x2="${x - 14}" y2="${box.y + 86}" stroke="${colors.border}"/>`
+      : "";
+    content += `${divider}<text x="${x}" y="${rowY}" class="label">Last ${item.label}</text>
+      <text x="${valueX}" y="${rowY + 25}" text-anchor="${valueAnchor}" class="heading">${number(item.commits)} commits</text>
+      <rect x="${x}" y="${rowY + 36}" width="${barWidth}" height="3" fill="${colors.subtle}"/>
+      <rect x="${x}" y="${rowY + 36}" width="${fillWidth.toFixed(1)}" height="3" fill="${colors.accent}"/>`;
   });
   return content;
 }
 
 function renderDesktop(data, colors) {
   const width = 900;
-  const height = 680;
+  const height = 600;
   const content = [
     renderHeader(data, colors, width),
-    renderMetrics(data, colors, { x: 24, y: 88, width: 204, height: 84, gap: 12, columns: 4 }),
-    renderTimeline(data, colors, { x: 24, y: 190, width: 548, height: 276 }, 18),
-    renderLanguages(data, colors, { x: 584, y: 190, width: 292, height: 276 }),
-    renderMomentum(data, colors, { x: 24, y: 478, width: 852, height: 178 }),
+    renderMetrics(data, colors, { x: 28, y: 91, width: 844, rowHeight: 74, columns: 4 }),
+    `<line x1="28" y1="172" x2="872" y2="172" stroke="${colors.border}"/>`,
+    renderTimeline(data, colors, { x: 28, y: 194, width: 548, height: 240 }, 18),
+    `<line x1="600" y1="194" x2="600" y2="434" stroke="${colors.border}"/>`,
+    renderLanguages(data, colors, { x: 624, y: 194, width: 248, height: 240 }),
+    `<line x1="28" y1="456" x2="872" y2="456" stroke="${colors.border}"/>`,
+    renderMomentum(data, colors, { x: 28, y: 474, width: 844, height: 98 }),
   ].join("");
   return svgShell({ width, height, colors, content });
 }
@@ -389,10 +372,13 @@ function renderMobile(data, colors) {
   const height = 1000;
   const content = [
     renderHeader(data, colors, width, true),
-    renderMetrics(data, colors, { x: 16, y: 100, width: 188, height: 84, gap: 12, columns: 2 }),
-    renderTimeline(data, colors, { x: 16, y: 296, width: 388, height: 260 }, 12),
-    renderLanguages(data, colors, { x: 16, y: 568, width: 388, height: 224 }, true),
-    renderMomentum(data, colors, { x: 16, y: 804, width: 388, height: 180 }, true),
+    renderMetrics(data, colors, { x: 18, y: 104, width: 384, rowHeight: 84, columns: 2 }),
+    `<line x1="18" y1="268" x2="402" y2="268" stroke="${colors.border}"/>`,
+    renderTimeline(data, colors, { x: 18, y: 288, width: 384, height: 226 }, 12),
+    `<line x1="18" y1="530" x2="402" y2="530" stroke="${colors.border}"/>`,
+    renderLanguages(data, colors, { x: 18, y: 550, width: 384, height: 212 }, true),
+    `<line x1="18" y1="780" x2="402" y2="780" stroke="${colors.border}"/>`,
+    renderMomentum(data, colors, { x: 18, y: 800, width: 384, height: 180 }, true),
   ].join("");
   return svgShell({ width, height, colors, content });
 }
