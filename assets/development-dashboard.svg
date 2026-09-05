@@ -63,7 +63,7 @@
       <text x="309.3333333333333" y="542" text-anchor="start" class="heading">174 commits</text>
       <rect x="309.3333333333333" y="553" width="253.33333333333331" height="3" fill="#e8eae6"/>
       <rect x="309.3333333333333" y="553" width="102.8" height="3" fill="#3f735c"/><line x1="576.6666666666666" y1="506" x2="576.6666666666666" y2="560" stroke="#d5d8d2"/><text x="590.6666666666666" y="517" class="label">Last 365 days</text>
-      <text x="590.6666666666666" y="542" text-anchor="start" class="heading">717 commits</text>
+      <text x="590.6666666666666" y="542" text-anchor="start" class="heading">714 commits</text>
       <rect x="590.6666666666666" y="553" width="253.33333333333331" height="3" fill="#e8eae6"/>
-      <rect x="590.6666666666666" y="553" width="104.4" height="3" fill="#3f735c"/>
+      <rect x="590.6666666666666" y="553" width="104.0" height="3" fill="#3f735c"/>
 </svg>
